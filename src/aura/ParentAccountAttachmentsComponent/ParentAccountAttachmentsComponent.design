@@ -1,0 +1,3 @@
+<design:component >
+		<design:attribute name="Objectname" label="object name" description="Enter the name for the attachment component" />	
+</design:component>

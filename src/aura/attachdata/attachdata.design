@@ -1,0 +1,4 @@
+<design:component label="Hello World">
+    <design:attribute name="Parenidfromcomp" label="Parent Id" description="Name of the person you want to greet" />
+
+</design:component>

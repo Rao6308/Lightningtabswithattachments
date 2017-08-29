@@ -1,0 +1,188 @@
+<aura:component controller="ParentAccountAttachmentscontroller" implements="force:appHostable,flexipage:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId" access="global" >
+    <ltng:require scripts="/resource/Jquery2_2_4,/resource/datatable_lightning"
+                  afterScriptsLoaded="{!c.afterScriptload}"/>
+    <aura:attribute name="Parenidfromcomp" type="String"/>
+    <aura:attribute name="attachlist" type="List"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:handler event="c:ParentAccountAttachmentsEvent" action="{!c.setParentId}"/>
+    <aura:attribute name="parentId" type="Id"/>
+    <aura:attribute name="Tabnamefromcomp" type="String"/>
+    
+    <aura:attribute name="setspinner" type="Boolean" default="false"/>
+    <div>
+        <input type="file" class="file" aura:id="file" />
+        <lightning:button label="Save" class="slds-button slds-button--neutral" iconName="utility:download" onclick="{!c.save}"></lightning:button>
+        <ui:spinner aura:id="spinner"  isVisible="{!v.setspinner}"/>
+    </div>    
+    <table class="slds-table slds-table_bordered slds-table_resizable-cols slds-table_fixed-layout" role="grid" >
+        <thead>
+            <tr class="slds-line-height_reset">
+                <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
+                        <span class="slds-assistive-text">Sort </span>
+                        <span class="slds-truncate" title="Attachment type">Attachment type</span>
+                        <div class="slds-icon_container">
+                            <lightning:icon iconName="utility:arrowdown" variant="bare" size="xx-small"/>
+                        </div>
+                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                    </a>
+                    <div class="slds-resizable">
+                        <label for="cell-resize-handle-1" class="slds-assistive-text">Name column width</label>
+                        <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-1" tabindex="0"/>
+                        <span class="slds-resizable__handle">
+                            <span class="slds-resizable__divider"></span>
+                        </span>
+                    </div>
+                </th>
+                <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
+                        <span class="slds-assistive-text">Sort </span>
+                        <span class="slds-truncate" title="Attachment Link">Attachment Link</span>
+                        <div class="slds-icon_container">
+                            <lightning:icon iconName="utility:arrowdown" variant="bare" size="xx-small"/>
+                        </div>
+                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                    </a>
+                    <div class="slds-resizable">
+                        <label for="cell-resize-handle-2" class="slds-assistive-text">Account Name column width</label>
+                        <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-2" tabindex="0"/>
+                        <span class="slds-resizable__handle">
+                            <span class="slds-resizable__divider"></span>
+                        </span>
+                    </div>
+                </th>
+                <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
+                        <span class="slds-assistive-text">Sort </span>
+                        <span class="slds-truncate" title="Author">Author</span>
+                        <div class="slds-icon_container">
+                            <lightning:icon iconName="utility:arrowdown" variant="bare" size="xx-small"/>
+                        </div>
+                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                    </a>
+                    <div class="slds-resizable">
+                        <label for="cell-resize-handle-3" class="slds-assistive-text">Close Date column width</label>
+                        <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-3" tabindex="0"/>
+                        <span class="slds-resizable__handle">
+                            <span class="slds-resizable__divider"></span>
+                        </span>
+                    </div>
+                </th>
+                <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
+                        <span class="slds-assistive-text">Sort </span>
+                        <span class="slds-truncate" title="Opportunity">Opportunity</span>
+                        <div class="slds-icon_container">
+                            <lightning:icon iconName="utility:arrowdown" variant="bare" size="xx-small"/>
+                        </div>
+                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                    </a>
+                    <div class="slds-resizable">
+                        <label for="cell-resize-handle-4" class="slds-assistive-text">Stage column width</label>
+                        <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-4" tabindex="0"/>
+                        <span class="slds-resizable__handle">
+                            <span class="slds-resizable__divider"></span>
+                        </span>
+                    </div>
+                </th>
+                <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
+                        <span class="slds-assistive-text">Sort </span>
+                        <span class="slds-truncate" title="Date Posted">Date Posted</span>
+                        <div class="slds-icon_container">
+                            <lightning:icon iconName="utility:arrowdown" variant="bare" size="xx-small"/>
+                        </div>
+                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                    </a>
+                    <div class="slds-resizable">
+                        <label for="cell-resize-handle-5" class="slds-assistive-text">Confidence column width</label>
+                        <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-5" tabindex="0"/>
+                        <span class="slds-resizable__handle">
+                            <span class="slds-resizable__divider"></span>
+                        </span>
+                    </div>
+                </th>
+                <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
+                        <span class="slds-assistive-text">Sort </span>
+                        <span class="slds-truncate" title="Date Modified">Date Modified</span>
+                        <div class="slds-icon_container">
+                            <lightning:icon iconName="utility:arrowdown" variant="bare" size="xx-small"/>
+                        </div>
+                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                    </a>
+                    <div class="slds-resizable">
+                        <label for="cell-resize-handle-6" class="slds-assistive-text">Amount column width</label>
+                        <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-6" tabindex="0"/>
+                        <span class="slds-resizable__handle">
+                            <span class="slds-resizable__divider"></span>
+                        </span>
+                    </div>
+                </th>
+                <th class="slds-is-sortable slds-is-resizable slds-text-title_caps" scope="col">
+                    <a href="javascript:void(0);" class="slds-th__action slds-text-link_reset" tabindex="0">
+                        <span class="slds-assistive-text">Sort </span>
+                        <span class="slds-truncate" title="Description">Description</span>
+                        <div class="slds-icon_container">
+                            <lightning:icon iconName="utility:arrowdown" variant="bare" size="xx-small"/>
+                        </div>
+                        <span class="slds-assistive-text" aria-live="assertive" aria-atomic="true"></span>
+                    </a>
+                    <div class="slds-resizable">
+                        <label for="cell-resize-handle-7" class="slds-assistive-text">Contact column width</label>
+                        <input type="range" min="20" max="1000" class="slds-resizable__input slds-assistive-text" id="cell-resize-handle-7" tabindex="0"/>
+                        <span class="slds-resizable__handle">
+                            <span class="slds-resizable__divider"></span>
+                        </span>
+                    </div>
+                </th>
+                <th scope="col" style="width: 3.25rem;">
+                    <div class="slds-th__action">
+                        <span class="slds-assistive-text">Actions</span>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <aura:iteration items="{!v.attachlist}" var="attach">
+                <tr class="slds-hint-parent">
+                    <th scope="row">
+                        <div class="slds-truncate" >
+                            {!attach.Name}
+                        </div>
+                    </th>
+                    <td role="gridcell">
+                        <div class="slds-truncate" > 
+                            <a href="{!'/'+attach.Id}" target="_blank">{!attach.Id}</a>
+                        </div>
+                    </td>
+                    <td role="gridcell">
+                        <div class="slds-truncate" >
+                            {!attach.CreatedBy.Name}
+                        </div>
+                    </td>
+                    <td role="gridcell">
+                        <div class="slds-truncate" >
+                            {!attach.ParentId}
+                        </div>
+                    </td>
+                    <td role="gridcell">
+                        <div class="slds-truncate">
+                            {!attach.LastModifiedDate}
+                        </div>
+                    </td>
+                    <td role="gridcell">
+                        <div class="slds-truncate" >
+                            {!attach.Description}
+                        </div>
+                    </td>
+                    <td role="gridcell">
+                        <div class="slds-truncate">
+                            
+                        </div>
+                    </td>
+                </tr> 
+            </aura:iteration>	
+        </tbody>
+    </table>
+</aura:component>
